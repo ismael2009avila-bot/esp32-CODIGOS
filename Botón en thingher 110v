@@ -1,0 +1,43 @@
+#include <WiFi.h>
+#include <ThingerESP32.h>
+
+// ====== DATOS THINGER ======
+#define USERNAME "Ismaxrt"
+#define DEVICE_ID "foco110"
+#define DEVICE_CREDENTIAL "TU_CREDENCIAL_AQUI"
+
+// ====== WIFI ======
+#define SSID "Cecilia Vasquezz 4G"
+#define SSID_PASSWORD "0104528062"
+
+// ====== OBJETO THINGER ======
+ThingerESP32 thing(USERNAME, DEVICE_ID, DEVICE_CREDENTIAL);
+
+// ====== PIN RELÉ ======
+const int rele = 23;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Configurar pin del relé
+  pinMode(rele, OUTPUT);
+  digitalWrite(rele, LOW); // Inicia apagado
+
+  // Conectar WiFi
+  thing.add_wifi(SSID, SSID_PASSWORD);
+
+  // Crear recurso tipo switch en Thinger
+  thing["foco"] << [](pson &in){
+    if(in.is_empty()) return;
+
+    if(in){
+      digitalWrite(rele, HIGH);   // Encender foco
+    }else{
+      digitalWrite(rele, LOW);    // Apagar foco
+    }
+  };
+}
+
+void loop() {
+  thing.handle();
+}
