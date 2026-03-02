@@ -1,0 +1,17 @@
+from machine import Pin
+from time import sleep
+
+# Definição dos pinos
+led = Pin(2, Pin.OUT)     # LED no GPIO 2
+rele = Pin(15, Pin.OUT)  # Relé no GPIO 15
+
+while True:
+    # Liga LED e Relé
+    led.on()
+    rele.on()
+    sleep(0.5)
+
+    # Desliga LED e Relé
+    led.off()
+    rele.off()
+    sleep(0.5)
