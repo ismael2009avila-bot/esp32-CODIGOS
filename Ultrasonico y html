@@ -1,0 +1,39 @@
+#include <WiFi.h>
+#include <WebServer.h>
+
+// ===== WIFI =====
+const char* ssid = "Cecilia Vasquezz 4G";
+const char* password = "0104528062";
+
+WebServer server(80);
+
+// ===== PINES ULTRASONICO =====
+const int trigPin = 5;
+const int echoPin = 18;
+
+long duracion;
+int distancia;
+
+// ===== FUNCION PARA MEDIR DISTANCIA =====
+int medirDistancia() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duracion = pulseIn(echoPin, HIGH);
+  distancia = duracion * 0.034 / 2;
+
+  return distancia;
+}
+
+// ===== PAGINA WEB =====
+void paginaPrincipal() {
+
+  String html = "<!DOCTYPE html><html>";
+  html += "<head><meta name='viewport' content='width=device-width, initial-scale=1'>";
+  html += "<title>Sensor Ultrasonico</title>";
+  html += "<style>";
+  html += "body
