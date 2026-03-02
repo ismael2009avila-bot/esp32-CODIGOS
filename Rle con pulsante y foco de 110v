@@ -1,0 +1,29 @@
+from machine import Pin
+from time import slee p
+
+# Definición de pines
+rele = Pin(15, Pin.OUT)                    # Relé
+boton = Pin(4, Pin.IN, Pin.PULL_UP)        # Botón con pull-up interno
+
+estado_rele = False
+ultimo_estado_boton = 1
+
+print("Sistema iniciado. Foco apagado")
+
+while True:
+    estado_boton = boton.value()
+
+    # Detecta cuando el botón es presionado
+    if ultimo_estado_boton == 1 and estado_boton == 0:
+        estado_rele = not estado_rele       # Cambia estado
+        rele.value(estado_rele)
+
+        if estado_rele:
+            print("💡 Foco prendido")
+        else:
+            print("💡 Foco apagado")
+
+        sleep(0.3)                          # Anti-rebote
+
+    ultimo_estado_boton = estado_boton
+    sleep(0.05)
